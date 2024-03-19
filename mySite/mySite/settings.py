@@ -37,7 +37,6 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'crispy_forms',
     'login.apps.LoginConfig',
     'registration.apps.RegistrationConfig',
     'polls.apps.PollsConfig',
@@ -137,4 +136,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRISPY_TEMPLATE_PACK="bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+AUTH_USER_MODEL = "registration.CustomUser"

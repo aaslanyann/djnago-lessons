@@ -1,16 +1,30 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
+
+from .forms import CustomUserCreationForm
 from .models import CustomUser
 
-class CustomUserInLine(admin.StackedInline):
+
+class CustomUserAdmin(UserAdmin):
+    add_form = CustomUserCreationForm
     model = CustomUser
-    can_delete = False
-    verbose_name_plural = 'CustomUser'
+    list_display = ("email", "is_staff", "is_active",)
+    list_filter = ("email", "is_staff", "is_active",)
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        ("Permissions", {"fields": ("is_staff", "is_active", "groups", "user_permissions", "phone_number")}),
+    )
+    add_fieldsets = (
+        (None, {
+            "classes": ("wide",),
+            "fields": (
+                "email", "password1", "password2", "is_staff",
+                "is_active", "groups", "user_permissions"
+            )}
+        ),
+    )
+    search_fields = ("email",)
+    ordering = ("email",)
 
-class CustomizedUserAdmin(UserAdmin):
-    inlines = (CustomUserInLine, )
 
-admin.site.unregister(User)
-admin.site.register(User, CustomizedUserAdmin)
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, CustomUserAdmin)
